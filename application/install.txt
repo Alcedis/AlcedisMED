@@ -1,0 +1,42 @@
+AlcedisMED
+Copyright (C) 2010-2016  Alcedis GmbH
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+------------------------------------------------------------------------------------------------------------------------
+
+AlcedisMED4 - Application setup guide
+
+------------------------------------------------------------------------------------------------------------------------
+
+###Attention###
+
+Some files or libs were removed from AlcedisMED due to gpl license.
+
+They need to be placed manually to the following directories.
+
+------------------------------------------------------------------------------------------------------------------------
+
+NAME in AlcedisMED4 | DIR(D) OR FILE(F) | DESCRIPTION | VERSION | SOURCE
+
+lib_med4/
+    lib/
+        smarty/ | D | Smarty Template Engine | at least v.2.6.11 | http://www.smarty.net/
+
+
+med4/
+    feature/
+        krebsregister/
+            export/
+                kr_1_0.xsd | F | XML Schema File | | http://www.tumorzentren.de/onkol-basisdatensatz.html
