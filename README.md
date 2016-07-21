@@ -1,3 +1,5 @@
+# AlcedisMED
+
 Alcedis MED bietet Ihnen ein breites Spektrum an Möglichkeiten:
 
  - Dokumentation aller Erkrankungen
@@ -8,3 +10,7 @@ Alcedis MED bietet Ihnen ein breites Spektrum an Möglichkeiten:
  - Tumorkonferenz
 
 Ab dem 3. Quartal 2016 verfügbar
+
+## Feature "Krebsregister" hinzugefügt (21.07.2016)
+Der Code für den Export an das hessische Krebsregister steht nun zur Verfügung
+
