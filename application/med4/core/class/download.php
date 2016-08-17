@@ -1,0 +1,19 @@
+<?php/*
+ * AlcedisMED
+ * Copyright (C) 2010-2016  Alcedis GmbH
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */ 
+
+class download{    /**     * _fileContent     *     * @access protected     * @var    string     */    protected $_fileContent;    /**     * _filePath     *     * @access  protected     * @var     string     */    protected $_filePath;    /**     * _fileType     *     * @access  protected     * @var     string     */    protected $_fileType;    /**     * create download     *     * @static     * @access  public     * @param   string $filePath     * @param   string $fileType     * @param   bool   $content     * @return  download     */    public static function create($filePath, $fileType, $content = false)    {        return new self($filePath, $fileType, $content);    }    /**     * download constructor.     *     * @param string $filePath     * @param string $fileType     * @param bool   $content     */    function __construct($filePath, $fileType, $content = false)    {        $this->_filePath = $filePath;        $this->_fileType = $fileType;        if ($content !== false) {            $this->_fileContent = $content;        }    }    /**     * readFile     *     * @access  public     * @return  download     */    public function readFile()    {        // if content is not already loaded        if ($this->hasFileContent() === false) {            if (file_exists($this->_filePath) === true) {                $this->_fileContent = file_get_contents($this->_filePath);            }        }        return $this;    }    /**     * output     *     * @access  public     * @param   string $fileName     * @return  void     */    public function output($fileName = null)    {        $this->readFile();        $filename = $fileName === null ? end(explode('/', $this->_filePath)) : $fileName;        $mime     = $this->getMimeType();        ob_end_clean();        if ($mime !== false) {            header('Cache-Control: must-revalidate, post-check=0,pre-check=0');            header('Pragma: public');            header('Content-type: ' . $mime . '; name=' . $filename);            header('Content-Disposition: attachment; filename=' . $filename);            echo $this->_fileContent;        }        exit;    }    /**     * getMimeType     *     * @access  private     * @return  string     */    private function getMimeType()    {      return mimeType::create()->get($this->_fileType);    }    /**     * getFilePath     *     * @access  public     * @return  string     */    public function getFilePath()    {        return $this->_filePath;    }    /**     * hasContent     *     * @access  public     * @return  bool     */    public function hasFileContent()    {        return (strlen($this->_fileContent) > 0);    }    /**     * setFileContent     *     * @access  public     * @param   string  $content     * @return  download     */    public function setFileContent($content)    {        $this->_fileContent = $content;        return $this;    }    /**     * getFileContent     *     * @access  public     * @return  string     */    public function getFileContent()    {        return $this->_fileContent;    }}

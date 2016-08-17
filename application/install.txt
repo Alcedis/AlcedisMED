@@ -32,11 +32,141 @@ NAME in AlcedisMED4 | DIR(D) OR FILE(F) | DESCRIPTION | VERSION | SOURCE
 
 lib_med4/
     lib/
-        smarty/ | D | Smarty Template Engine | at least v.2.6.11 | http://www.smarty.net/
+        ckeditor | D | CKEditor is a ready-for-use HTML text editor designed to simplify web content creation | at least v.3.5.2 | http://ckeditor.com/
+            ...
+            config.js*
+                * please note modifications documented in "config_alcedis.txt"
+
+        fpdf | D | FPDF is a PHP class which allows to generate PDF files with pure PHP | at least v.1.7 | http://www.fpdf.org/
+        jpgraph | D | JpGraph is an Object-Oriented Graph creating library for PHP5 (>=5.1) and PHP7.0 | at least v.2.1 | http://jpgraph.net/pro/
+        libphonenumber | D | PHP library for parsing, formatting, storing and validating international phone numbers. | current branch | https://github.com/davideme/libphonenumber-for-PHP
+        odt2xhtml/ | D | Please note: used lib in alcedisMED isn't available anymore. Please use current stable and make required changes if needed | https://github.com/hucste/Odt2Xhtml
+            ...
+            config.php*
+                * please note modifications documented in "config_alcedis.txt"
+        pear/
+            HTTP/
+                Request.php | F | Class for performing HTTP requests | at least 1.4.4 | http://pear.php.net/package/HTTP_Request/download
+            NET/
+                Socket.php | F | Network Socket Interface | at least 1.0.9 | http://pear.php.net/package/Net_Socket/download/
+                URL.php | F | Easy parsing of Urls | at least 1.0.15 | http://pear.php.net/package/Net_URL/download/
+            OLE/ | D | Package for reading and writing OLE containers | at least v.0.5 | http://pear.php.net/package/OLE/download
+            Spreadsheet/ | D | Package for generating Excel spreadsheets | at least v.0.9.2 | http://pear.php.net/package/Spreadsheet_Excel_Writer/download
+                Excel/
+                    Writer.php*
+                        * please note modifications documented in "Writer_alcedis.txt"
+
+            http_upload.php* | F | Easy and secure managment of files submitted via HTML Forms | at least 0.9.1 | http://pear.php.net/package/HTTP_Upload/download
+                * please note modifications documented in "http_upload_alcedis.txt"
+
+            PEAR.php | F | Base class for other PEAR classes | at least 1.4.9 | http://pear.php.net/package/PEAR/download/
+
+        phpexcel/ | D | Read, Write and Create spreadsheet documents in PHP | branch 1.8 | https://github.com/PHPOffice/PHPExcel |
+            PHPExcel/
+                ...
+            PHPExcel.php
+
+        smarty/
+            libs/ | D | Smarty Template Engine | at least v.2.6.11 | http://www.smarty.net/
+                internals/
+                    ...
+                plugins/
+                    ...
+                ...
+                Smarty.class.php
+
+        tcpdf/ | D | TCPDF | at least v.6.2.6 | https://github.com/tecnickcom/tcpdf
+            config/
+                ...
+            fonts/
+                ...
+            include/
+                ...
+            ...
+            tcpdf.php*
+                * please note modifications documented in "tcpdf_alcedis.txt"
+
+        zip/
+            pclzip.lib.php | F | PclZip library offers compression and extraction functions for Zip formatted archives | at least v.2.8.2 | http://www.phpconcept.net/pclzip/pclzip-downloads
+
 
 
 med4/
     feature/
         krebsregister/
             export/
-                kr_1_0.xsd | F | XML Schema File | | http://www.tumorzentren.de/onkol-basisdatensatz.html
+                kr_1_0.xsd | F | XML Schema File | current stable | http://www.tumorzentren.de/onkol-basisdatensatz.html
+
+        krhe/
+            scripts/
+                krhe_v1_0.xsd | F | XML Schema File | | <!-- Mit XMLSpy v2006 rel. 3 sp1 bearbeitet (http://www.altova.com) von Michael Füller (Niedersächsisches Landesgesundheitsamt) -->
+
+        gekid/
+            scripts/
+                GEKID_v1_06.xsd | F | XML Schema File | | <!-- Mit XMLSpy v2006 rel. 3 sp1 bearbeitet (http://www.altova.com) von Michael Füller (Niedersächsisches Landesgesundheitsamt) -->
+
+        exports/
+            scripts/
+                krbw/
+                    krbw_export_schema_2_1.xsd | F | XML Schema File | 1.0.15 03.08.2011 | http://www.krebsregister-bw.de/
+                krrp/
+                    krrp_td_a02_Krebsregister_RLP_(0x9DE5E14A)_pub.asc | F | public key of krrp | | http://www.krebsregister-rheinland-pfalz.de
+                wbc/
+                    WBCExport_Schema_2010v7.xsd | F | XML Schema File | v2010v7 | http://www.doc-holding.de/
+                wdc/
+                    ColonCa_2010.xsd | F | XML Schema File | v2010 | http://www.doc-holding.de/
+                    ColonCa_2011.xsd | F | XML Schema File | v2011 | http://www.doc-holding.de/
+
+        export/
+            dmp/
+                XKM | D | KBV-Kryptomodul | | ftp://ftp.kbv.de/ita-update/KBV-Software/Kryptomodul/
+                XPM | D | XPM Directory | | ftp://ftp.kbv.de/ita-update/Medizinische-Dokumentationen/Brustkrebs/
+                eDokumentation.xsl | F | XSL File | latest file | ftp://ftp.kbv.de/ita-update/Medizinische-Dokumentationen/Datenannahmestellen/XSL/
+
+            dmp_2014/
+                XKM | D | KBV-Kryptomodul  | | ftp://ftp.kbv.de/ita-update/KBV-Software/Kryptomodul/
+                XPM | D | XPM Directory | | ftp://ftp.kbv.de/ita-update/Medizinische-Dokumentationen/Brustkrebs/
+                eDokumentation.xsl | F | XSL File | latest file | ftp://ftp.kbv.de/ita-update/Medizinische-Dokumentationen/Datenannahmestellen/XSL/
+
+            gekid_plus/
+                gekid_plus_2_1.xsd | F | XML Schema File | v2.1 | http://www.gekid.de/
+
+            krbw/
+                krbw_2_1.xsd | F | XML Schema File | v2.1 | http://www.krebsregister-bw.de/
+
+            oncobox_darm/
+                oncobox_darm_e_1_1_1.xsd | F | XML Schema File | current stable | http://www.xml-oncobox.de/
+
+            oncobox_prostata/
+                oncobox_prostata_e_5_3_1.xsd | F | XML Schema File | current stable | http://www.xml-oncobox.de/
+
+            onkeyline/
+                onkeyline_1_0.xsd | F | XML Schema File | v1.0 | http://kvn.de
+
+            wbc/
+                wbc_2012_0.xsd | F | XML Schema File | v2012 | http://www.doc-holding.de/
+
+            wdc/
+                wdc_2011_0.xsd | F | XML Schema File | v2011 | http://www.doc-holding.de/
+    media/
+        img/
+            app/
+                colorpicker | D | Color picker image directory | current stable | http://www.eyecon.ro/colorpicker/
+
+        css/
+            jquery_colorpicker.css | F | Color picker stylesheet | current stable | http://www.eyecon.ro/colorpicker/
+
+        js/
+            json2.js | F | JSON Parser (backup for browser) | current stable | http://www.json.org/
+            jquery/
+                jquery.js | F | jQuery | v1.3.2 | https://blog.jquery.com/2009/02/20/jquery-1-3-2-released/
+                jquery.ui.js | F | jQuery ui | jQuery UI 1.8.10 | https://blog.jqueryui.com/2011/02/jquery-ui-1-8-10/
+                jquery.colorpicker.js | F | jQuery Color picker plugin | current stable | http://www.eyecon.ro/colorpicker/
+
+        xsl/
+
+    reports/
+        pdf/
+            b/
+                dmp_einverstaendnis/
+                    dmp_einverstaendnis.pdf | F | Informed consent of DMP | v03.12.2012 | ftp://ftp.kbv.de/ita-update/Medizinische-Dokumentationen/Brustkrebs/EXT_ITA_AHEX_Teilnahme_DMP_Brustkrebs.pdf

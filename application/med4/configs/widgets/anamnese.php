@@ -1,0 +1,276 @@
+<?php
+
+/*
+ * AlcedisMED
+ * Copyright (C) 2010-2016  Alcedis GmbH
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */ 
+
+$this
+   ->showFieldIn(
+      array(
+        'zn_hysterektomie',
+        'screening'
+      ),
+      'b'
+   )
+   ->showFieldIn(
+      array(
+        'gen_brca1',
+        'gen_brca2'
+      ),
+       array('b', 'gt')
+   )
+   ->showFieldIn(
+      array(
+         'platinresistenz'
+      ),
+      array('p', 'gt')
+   )
+   ->showFieldIn(
+      array(
+         'risiko_autoimmun',
+         'risiko_autoimmun_sjoergren',
+         'risiko_autoimmun_arthritis',
+         'risiko_autoimmun_lupus_ery',
+         'risiko_autoimmun_zoeliakie',
+         'risiko_autoimmun_dermatitis',
+         'risiko_autoimmun_sonstige',
+         'gen_wiskott_aldrich',
+         'gen_cvi',
+         'gen_louis_bar',
+         'sy_fieber',
+         'sy_nachtschweiss',
+         'risiko_transplantation',
+         'risiko_transplantation_detail',
+         'risiko_infekt',
+         'risiko_infekt_ebv',
+         'risiko_infekt_htlv1',
+         'risiko_infekt_hiv',
+         'risiko_infekt_hcv',
+         'risiko_infekt_hp',
+         'risiko_infekt_bb',
+         'risiko_infekt_sonstige'
+      ),
+     array('leu', 'ly', 'snst')
+   )
+   ->showFieldIn(
+      array(
+        'risiko_raucher_dauer',
+        'risiko_raucher_menge',
+        'risiko_exraucher',
+        'risiko_exraucher_dauer',
+        'risiko_exraucher_menge',
+        'euroqol',
+        'lcss'
+      ),
+      'lu'
+   )
+   ->showFieldIn(
+      array(
+         'risiko_pille',
+         'risiko_pille_dauer',
+         'hormon_substitution',
+         'hormon_substitution_art',
+         'hormon_substitution_dauer',
+         'hormon_sterilitaetsbehandlung',
+         'hormon_sterilitaetsbehandlung_dauer',
+         'sonst',
+         'sonst_dauer'
+      ),
+      array('b', 'gt')
+   )
+   ->showFieldIn(
+      array(
+         'darmerkrankung_jn',
+         'darmerkrankung_morbus',
+         'darmerkrankung_colitis',
+         'darmerkrankung_sonstige',
+         'fb_dkg_beurt'
+      ),
+      'd'
+   )
+   ->showFieldIn(
+      array(
+         'risiko_sonnenbrand_kind',
+         'risiko_sonnenbankbesuch',
+         'risiko_sonnenschutzmittel',
+         'risiko_sonnenschutzmittel_detail',
+         'risiko_noxen',
+         'risiko_noxen_detail',
+         'risiko_familie_melanom',
+         'risiko_chronische_wunden'
+      ),
+      'h'
+   )
+   ->showFieldIn(
+      array(
+         'sy_dyspnoe',
+         'sy_haemoptnoe',
+         'sy_husten',
+         'sy_husten_dauer',
+         'sy_para_syndrom',
+         'sy_para_syndrom_detail',
+         'sy_para_syndrom_symptom',
+         'sy_gewichtsverlust_3mo'
+        ),
+      'lu'
+   )
+   ->showFieldIn(
+        array(
+            'fb_dkg'
+        ),
+        array('p', 'd')
+   )
+   ->showFieldIn(
+      array(
+         'sy_harndrang',
+         'sy_nykturie',
+         'sy_pollakisurie',
+         'sy_miktion',
+         'sy_restharn',
+         'sy_harnverhalt',
+         'sy_harnstau',
+         'sy_harnstau_lokalisation',
+         'sy_haematurie',
+         'sy_gewichtsverlust_2wo',
+         'iciq_ui',
+         'ics',
+         'iief5',
+         'lq_dkg',
+         'ipss',
+         'gz_dkg',
+         'ql',
+         'testosteron_substitution',
+         'testosteron_substitution_dauer',
+         'gen_hpc1',
+         'gen_pcap',
+         'gen_cabp',
+         'gen_x27_28',
+         'pot_pde5hemmer',
+         'pot_pde5hemmer_haeufigkeit',
+         'pot_vakuumpumpe',
+         'pot_skat',
+         'pot_penisprothese',
+         'vorop',
+         'vorop_lok1',
+         'vorop_lok2',
+         'vorop_lok3',
+         'vorop_lok4'
+      ),
+      'p'
+   )
+   ->showFieldIn(
+      array(
+         'gen_jn',
+      ),
+      array('b', 'd', 'leu', 'ly', 'p', 'snst', 'gt')
+   )
+   ->showFieldIn(
+      array(
+         'gen_sonstige'
+      ),
+      array('b', 'd', 'leu', 'ly', 'snst', 'gt')
+   )
+   ->showFieldIn(
+      array(
+         'gen_fap',
+         'gen_gardner',
+         'gen_peutz',
+         'gen_hnpcc',
+         'gen_turcot',
+         'gen_polyposis',
+         'gen_dcc',
+         'gen_baxgen',
+         'gen_smad2',
+         'gen_smad4',
+         'gen_kras',
+         'gen_apc',
+         'gen_p53',
+         'gen_cmyc',
+         'gen_tgfb2',
+         'bethesda',
+         'vorbestrahlung',
+         'vorbestrahlung_diagnose'
+      ),
+      'd'
+   )
+   ->hideFieldIn(
+      array(
+         'schwanger',
+         'menopausenstatus',
+      ),
+      'p'
+   )
+   ->showFieldIn(
+        array(
+         'alter_menarche',
+         'alter_menopause',
+         'menopause_iatrogen',
+         'menopause_iatrogen_ursache',
+         'geburten_lebend',
+         'geburten_tot',
+         'geburten_fehl',
+         'schwangerschaft_erste_alter',
+         'schwangerschaft_letzte_alter'
+        ),
+        array('b', 'gt')
+   )
+   ->showFieldIn(
+        array(
+            'hpv',
+            'vorop_uterus_zervix',
+            'vorop_uterus_zervix_jahr',
+            'vorop_uterus_zervix_erhaltung',
+            'vorop_uterus_zervix_histologie',
+            'vorop_uterus_corpus',
+            'vorop_uterus_corpus_jahr',
+            'vorop_uterus_corpus_erhaltung',
+            'vorop_uterus_corpus_histologie',
+            'vorop_ovar_r',
+            'vorop_ovar_r_jahr',
+            'vorop_ovar_r_erhaltung',
+            'vorop_ovar_r_histologie',
+            'vorop_ovar_l',
+            'vorop_ovar_l_jahr',
+            'vorop_ovar_l_erhaltung',
+            'vorop_ovar_l_histologie',
+            'vorop_adnexe_r',
+            'vorop_adnexe_r_jahr',
+            'vorop_adnexe_r_erhaltung',
+            'vorop_adnexe_r_histologie',
+            'vorop_adnexe_l',
+            'vorop_adnexe_l_jahr',
+            'vorop_adnexe_l_erhaltung',
+            'vorop_adnexe_l_histologie',
+            'vorop_vulva',
+            'vorop_vulva_jahr',
+            'vorop_vulva_erhaltung',
+            'vorop_vulva_histologie',
+            'vorop_mamma_r',
+            'vorop_mamma_r_jahr',
+            'vorop_mamma_r_erhaltung',
+            'vorop_mamma_r_histologie',
+            'vorop_mamma_l',
+            'vorop_mamma_l_jahr',
+            'vorop_mamma_l_erhaltung',
+            'vorop_mamma_l_histologie',
+            'vorop_sonstige',
+            'vorop_sonstige_jahr',
+            'vorop_sonstige_bem'
+        ),
+         'gt'
+    );
+?>

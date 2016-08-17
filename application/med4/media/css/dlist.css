@@ -1,0 +1,195 @@
+/*
+ * AlcedisMED
+ * Copyright (C) 2010-2016  Alcedis GmbH
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */ 
+
+/**************************************************
+ * Alcedis Dialog Stylesheet
+ *
+*/
+
+.dlisttable{
+ width:100%;
+ margin:0px;
+ padding:0px;
+ border-collapse:collapse;
+}
+
+.dlisttable td.head{
+ font-size:11px;
+ padding:3px 5px 3px 6px;
+ border:0px !important;
+ border-bottom:1px slid #fff !important;
+}
+
+.dlisttable td.subhead{
+ font-size:12px;
+ padding:1px 3px 1px 3px;
+ border:0px !important;
+ border-bottom:1px solid #fff !important;
+}
+.dlisttable .head {
+   border:0px !important;
+   border-bottom:1px solid #fff !important;
+}
+
+.dlisttable td {
+   border:0px !important;
+}
+
+.dlisttable span.no_data{
+ font-style: italic;
+ font-size:12px;
+}
+
+.dlisttable img.dlistbutton{
+ cursor: pointer;
+}
+
+.dlist {
+ margin-right:1px;
+}
+
+.ui-dialog {
+ margin:0px auto;
+ text-align:left;
+ display:block;
+ font-size:10pt !important;
+ float:left;
+ color:#000;
+ padding:0px;
+}
+
+.ui-dialog-content {
+   padding:5px !important;
+}
+
+.ui-dialog .formtable {
+   /*width: 100% !important;*/
+}
+
+.ui-dialog .error {
+ position: relative;
+ left: 2px;
+ right: 3px;
+ top: 3px;
+}
+
+
+
+.dlistloading {
+   height: 50px;
+   width:  100%;
+   margin-top:-40px;
+   background-image: url(../img/ui/dlist-loader.gif);
+   background-repeat: no-repeat;
+   background-position: center;
+}
+
+.dlist .add {
+
+}
+
+/* F�rbt die Hintergrundfelder ein*/
+.ajax_error_edt
+{
+   background:   #e9a8b9;
+}
+
+
+/*dick*/
+.ajax_even {
+   background:   #fafb8d;
+}
+
+.ajax_odd {
+   background:   #f5f6b3;
+}
+
+/* IMAGES */
+
+
+/* IE 6 fix*/
+.err_middle iframe
+{
+	display:none;/*sorry for IE5*/
+	display/**/:block;/*sorry for IE5*/
+	position:absolute;/*must have*/
+	top:0;/*must have*/
+	left:0;/*must have*/
+	z-index:-1;/*must have*/
+	filter:mask();/*must have*/
+	width:3000px;/*must have for any big value*/
+	height:3000px/*must have for any big value*/;
+}
+
+.err_left{
+   background-image: url(../images/ajax/err_left.gif);
+   repeat: no-repeat;
+   height: 30px;
+   width:  10px;
+   float: left;
+}
+
+.err_right{
+   background-image: url(../images/ajax/err_right.gif);
+   repeat: no-repeat;
+   height: 30px;
+   width:  10px;
+   float: left;
+}
+
+.err_text {
+   font-size: 10pt;
+   height: 30px;
+   float: left;
+   background-image: url(../images/ajax/err_middle.gif);
+   repeat: repeat-y;
+}
+
+/* Neue Fehlerkorrektur */
+
+.validate_data {
+   height: 19px;
+   width:  220px;
+   background-image: url(../img/ui/ajax-loader.gif);
+   repeat: no-repeat;
+   display:none;
+}
+
+.link {
+   cursor:pointer;
+}
+
+.picker-history {
+   float:left;
+   padding-left:5px;
+}
+
+.d_frame-scroll {
+    overflow-y:scroll;
+    border-bottom:1px solid #4F769D;
+    margin-bottom:5px;
+}
+
+#d_input {
+    overflow:visible;
+}
+
+.d_input-scroll {
+    overflow:hidden;
+}
+          
