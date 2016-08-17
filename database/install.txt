@@ -21,14 +21,15 @@ AlcedisMED4 - Database setup guide
 
 ------------------------------------------------------------------------------------------------------------------------
 
-Step 1: Create a mySql database on your server
+1: Create a MySql database (e.g. "med4") with "latin1_german1_ci" collation on your server
 
-Step 2: Please execute sql statements in following order on this database
+2: Please execute sql statements in following order for this database:
 
-    - sql/structure.sql
-    - sql/views.sql
-    - sql/settings.sql
-    - sql/data.sql
-    - sql/email.sql
+	***Please note that all files must be imported with ISO-8859-1 Charset
 
-TODO
+    sql/structure.sql
+    sql/views.sql
+    sql/settings.sql
+    sql/data.sql
+    sql/email.sql*
+		* Please notice that this file must be configured before execution
