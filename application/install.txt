@@ -42,6 +42,10 @@ lib_med4/
         libphonenumber | D | PHP library for parsing, formatting, storing and validating international phone numbers. | current branch | https://github.com/davideme/libphonenumber-for-PHP
         odt2xhtml/ | D | Please note: used lib in alcedisMED isn't available anymore. Please use current stable and make required changes if needed | https://github.com/hucste/Odt2Xhtml
             ...
+            php5/
+                ...
+                odt2xhtml.php5*
+                * please note modifications documented in "odt2xhtml_alcedis.txt"
             config.php*
                 * please note modifications documented in "config_alcedis.txt"
         pear/
@@ -71,9 +75,17 @@ lib_med4/
                 internals/
                     ...
                 plugins/
-                    ...
+                    function.html_options.php*
+                        * please note modifications documented in "function.html_options_alcedis.txt"
+                    modifier.debug_print_var.php*
+                        * please note modifications documented in "modifier.debug_print_var_alcedis.txt"
+                    shared.escape_special_chars.php*
+                        * please note modifications documented in "shared.escape_special_chars_alcedis.txt"
                 ...
-                Smarty.class.php
+                Smarty.class.php*
+                    * please note modifications documented in "Smarty.class_alcedis.txt"
+                Smarty_Compiler.class.php*
+                    * please note modifications documented in "Smarty_Compiler.class_alcedis.txt"
 
         tcpdf/ | D | TCPDF | at least v.6.2.6 | https://github.com/tecnickcom/tcpdf
             config/
