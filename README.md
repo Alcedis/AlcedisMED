@@ -9,8 +9,6 @@ Alcedis MED bietet Ihnen ein breites Spektrum an Möglichkeiten:
  - DMP Export, zertifiziert von der KBV (bis 30.06.2018)
  - Tumorkonferenz
 
-Ab dem 3. Quartal 2016 verfügbar
-
 ## Feature "Krebsregister" hinzugefügt (21.07.2016)
 Der Code für den Export an das hessische Krebsregister steht nun zur Verfügung
 
