@@ -37,7 +37,9 @@ lib_med4/
             config.js*
                 * please note modifications documented in "config_alcedis.txt"
 
-        fpdf | D | FPDF is a PHP class which allows to generate PDF files with pure PHP | at least v.1.7 | http://www.fpdf.org/
+        fpdf* | D | FPDF is a PHP class which allows to generate PDF files with pure PHP | at least v.1.7 | http://www.fpdf.org/
+			* folder contains also FPDI | Import pages from existing PDF documents and use them as templates in FPDF | at least v.1.5.2 | https://www.setasign.com/
+		
         jpgraph | D | JpGraph is an Object-Oriented Graph creating library for PHP5 (>=5.1) and PHP7.0 | at least v.2.1 | http://jpgraph.net/pro/
         libphonenumber | D | PHP library for parsing, formatting, storing and validating international phone numbers. | current branch | https://github.com/davideme/libphonenumber-for-PHP
         odt2xhtml/ | D | Please note: used lib in alcedisMED isn't available anymore. Please use current stable and make required changes if needed | https://github.com/hucste/Odt2Xhtml
