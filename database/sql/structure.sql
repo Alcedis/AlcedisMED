@@ -2926,42 +2926,7 @@ CREATE TABLE `l_qs` (
   `bez` varchar(255) COLLATE latin1_german1_ci NOT NULL DEFAULT '',
   `pos` smallint(6) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_german1_ci;
-CREATE TABLE `l_qs_2009` (
-`klasse` varchar(30)
-,`code` varchar(30)
-,`bez` varchar(255)
-,`pos` smallint(6)
-);
-CREATE TABLE `l_qs_2010` (
-`klasse` varchar(30)
-,`code` varchar(30)
-,`bez` varchar(255)
-,`pos` smallint(6)
-);
-CREATE TABLE `l_qs_2011` (
-`klasse` varchar(30)
-,`code` varchar(30)
-,`bez` varchar(255)
-,`pos` smallint(6)
-);
-CREATE TABLE `l_qs_2012` (
-`klasse` varchar(30)
-,`code` varchar(30)
-,`bez` varchar(255)
-,`pos` smallint(6)
-);
-CREATE TABLE `l_qs_2013` (
-`klasse` varchar(30)
-,`code` varchar(30)
-,`bez` varchar(255)
-,`pos` smallint(6)
-);
-CREATE TABLE `l_qs_2014` (
-`klasse` varchar(30)
-,`code` varchar(30)
-,`bez` varchar(255)
-,`pos` smallint(6)
-);
+
 
 CREATE TABLE `l_qs_valid` (
   `jahr` year(4) NOT NULL,
