@@ -1,5 +1,5 @@
 <?php
-   /**
+
 /*
  * AlcedisMED
  * Copyright (C) 2010-2016  Alcedis GmbH
@@ -18,13 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ 
 
-    * INFO:
-    * Die Klasse dataCollector included alle query Dateien!
-    * Wenn hier Variablen genutzt werden, muss sichergestellt werden,
-    * dass diese auch in der Klasse vorbelegt werden!!!
-    *
-    * Gilt auf für die Top10 generierung der Codepicker!!!
-    */
+/*
+ * INFO:
+ * Die Klasse dataCollector included alle query Dateien!
+ * Wenn hier Variablen genutzt werden, muss sichergestellt werden,
+ * dass diese auch in der Klasse vorbelegt werden!!!
+ *
+ * Gilt auf für die Top10 generierung der Codepicker!!!
+*/
 
 //, 'preselect' => 'user.user_id'
 $querys['query_user'] = "
