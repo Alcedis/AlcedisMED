@@ -20,29 +20,38 @@ please modify:
 
 class Smarty {
 
-    add ->
+    add property ->
 
     /**
+     * alcedis form element widget
      *
+     * @access public
      * @var widget
      */
     public $widget;
 
 
-    add ->
+    add methods ->
 
     /**
+     * get alcedis form element widget
      *
      * @return widget
      */
-    public function getWidget() {
+    public function getWidget()
+    {
        return $this->widget;
     }
 
 
-    add ->
-
-    function set_config($config = array())
+    /**
+     * completely overwrite smarty config
+     *
+     * @access public
+     * @param  array $config
+     * @return void
+     */
+    public function set_config($config = array())
     {
        if (count($config) > 0) {
           $this->_config[0]['vars'] = $config;
@@ -50,9 +59,15 @@ class Smarty {
     }
 
 
-    add ->
-
-    function &set_config_var($name, $value)
+    /**
+     * set single smarty config entry
+     *
+     * @access public
+     * @param  string $name
+     * @param  string $value
+     * @return Smarty
+     */
+    public function &set_config_var($name, $value)
     {
         $this->_config[0]['vars'][$name] = $value;
 
@@ -60,13 +75,18 @@ class Smarty {
     }
 
 
+    modify method:
 
-    modify:
-
+    /*
+     *
+     ...
+     *
+     * @return Smarty
+     */
     function assign($tpl_var, $value = null)
     {
-
-        add:
+        ...
+        ...
 
         return $this;
     }
