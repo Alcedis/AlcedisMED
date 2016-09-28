@@ -1,5 +1,6 @@
 # AlcedisMED
 
+## Übersicht
 Alcedis MED bietet Ihnen ein breites Spektrum an Möglichkeiten:
 
  - Dokumentation aller Erkrankungen
@@ -9,6 +10,20 @@ Alcedis MED bietet Ihnen ein breites Spektrum an Möglichkeiten:
  - DMP Export, zertifiziert von der KBV (bis 30.06.2018)
  - Tumorkonferenz
 
+## Systemvoraussetzungen
+
+**Hardware:**
+- 4 GB RAM
+- mind. 50 GB HDD
+- Dual Core CPU
+
+
+**Software:**
+- Linux basiertes OS
+- PHP v5.6.x
+- Apache Webserver *(current stable Release)*
+- MySQL Datenbank *(current stable Release)*
+
+
 ## Feature "Krebsregister" hinzugefügt (21.07.2016)
 Der Code für den Export an das hessische Krebsregister steht nun zur Verfügung
-
