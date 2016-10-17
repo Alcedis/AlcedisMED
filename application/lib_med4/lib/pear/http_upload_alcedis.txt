@@ -16,7 +16,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ------------------------------------------------------------------------------------------------------------------------
 
-please modify:
+
+http_upload.php is called "Upload.php" when downloaded. Just rename it an modify:
 
 function _evalValidExtensions()
 {
