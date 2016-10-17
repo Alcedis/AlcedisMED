@@ -24,6 +24,10 @@ Alcedis MED bietet Ihnen ein breites Spektrum an Möglichkeiten:
 - Apache Webserver *(current stable Release)*
 - MySQL Datenbank *(current stable Release)*
 
+## Webinar vom 05.10.2016 zum Thema: AlcedisMED Installation
+
+https://youtu.be/3wzhyhhHhts
+
 
 ## Feature "Krebsregister" hinzugefügt (21.07.2016)
 Der Code für den Export an das hessische Krebsregister steht nun zur Verfügung
