@@ -4,6 +4,10 @@
 
 https://tumordokumentation.alcedis.de
 
+### Spezifikationsdokumente für die Anwendung
+
+https://tumordokumentation.alcedis.de/downloads/
+
 ## Übersicht
 Alcedis MED bietet Ihnen ein breites Spektrum an Möglichkeiten:
 
