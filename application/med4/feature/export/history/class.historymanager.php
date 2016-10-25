@@ -3,20 +3,20 @@
 /*
  * AlcedisMED
  * Copyright (C) 2010-2016  Alcedis GmbH
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 require_once('class.history.php');
 
@@ -166,6 +166,18 @@ class CHistoryManager
     public function getHistories($exportName, $orgId, $userId)
     {
         $histories = array();
+
+        $conditions = [
+            "org_id = '{$orgId}'"
+        ];
+
+        // TODO make it configurable
+        if ($exportName !== 'kr_he') {
+            $conditions[] = "user_id = '{$userId}'";
+        }
+
+        $conditions = implode(' AND ', $conditions);
+
         $query = "
             SELECT
                 export_history_id,
@@ -179,12 +191,12 @@ class CHistoryManager
             FROM
                 export_history eh
             WHERE
-                export_name = '$exportName' AND
-                org_id = '$orgId' AND
-                user_id = '$userId'
+                export_name = '{$exportName}' AND
+                {$conditions}
             ORDER BY
                 createtime DESC
         ";
+
         $result = sql_query_array($this->_db, $query);
 
         if ($result !== false) {
@@ -264,36 +276,53 @@ class CHistoryManager
     }
 
 
-
-
+    /**
+     * deleteHistoryById
+     *
+     * @access  p
+     * @param $exportName
+     * @param $orgId
+     * @param $userId
+     * @param $historyId
+     * @return  void
+     */
     public function deleteHistoryById($exportName, $orgId, $userId, $historyId)
     {
+        $conditions = [
+            "org_id = '{$orgId}'"
+        ];
+
+        // TODO make it configurable
+        if ($exportName !== 'kr_he') {
+            $conditions[] = "user_id = '{$userId}'";
+        }
+
+        $conditions = implode(' AND ', $conditions);
+
         $query = "
             SELECT
-                eh.export_history_id,
-                eh.export_log_id,
-                eh.export_name,
-                eh.org_id,
-                eh.user_id,
-                eh.date,
-                eh.filter,
-                eh.file
-
+                export_history_id,
+                export_log_id,
+                export_name,
+                org_id,
+                user_id,
+                date,
+                filter,
+                file
             FROM
-                export_history eh
-
+                export_history
             WHERE
-                eh.export_name = '$exportName'
-                AND eh.org_id = '$orgId'
-                AND eh.user_id = '$userId'
-                AND eh.export_history_id = '$historyId'
+                export_history_id = '{$historyId}' AND
+                export_name = '{$exportName}' AND
+                {$conditions}
         ";
+
         $result = sql_query_array($this->_db, $query);
+
         if (($result !== false) && (count($result) == 1)) {
             $history = new CHistory();
             $history->setFromDatabase($result[0]);
             $this->deleteHistory($history);
         }
     }
-
 }
