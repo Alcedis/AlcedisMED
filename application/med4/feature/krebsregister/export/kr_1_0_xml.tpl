@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *}
+
 <?xml version="1.0" encoding="UTF-8"?>
 <ADT_GEKID xmlns="http://www.gekid.de/namespace">
     <Absender Absender_ID="Alcedis" Software_ID="Alcedis" Installations_ID="MED">

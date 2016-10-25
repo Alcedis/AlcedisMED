@@ -3,20 +3,20 @@
 /*
  * AlcedisMED
  * Copyright (C) 2010-2016  Alcedis GmbH
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 /**
  * Class registerStateMessageInitial
@@ -70,7 +70,9 @@ class registerStateMessageInitial extends registerStateMessageAbstract
                     $exportData = $message->getSection('export')->getData();
 
                     // if disease is not ly, leu and snst = one tnm state must be filled
-                    $condition = in_array($exportData['erkrankung'], array('ly', 'leu', 'snst')) === false;
+                    $condition = in_array($exportData['erkrankung'], array('ly', 'leu', 'snst')) === false &&
+                        str_starts_with($sectionData['primaertumor_icd_code'], 'C44') === false
+                    ;
 
                     return $condition;
                 }
@@ -95,12 +97,14 @@ class registerStateMessageInitial extends registerStateMessageAbstract
 
                     // we only want to throw this message block one for each section
                     if (isset($stack[$parentId][$field]) === false) {
-                        // if disease is not ly, leu and snst = one tnm state must be filled
-                        $diseaseCondition = in_array($exportData['erkrankung'], array('ly', 'leu', 'snst')) === false;
+                        $sectionData = $section->getData();
+
+                        // if disease is not ly, leu and snst and not starts with C44 = one tnm state must be filled
+                        $diseaseCondition = in_array($exportData['erkrankung'], array('ly', 'leu', 'snst')) === false &&
+                            str_starts_with($sectionData['primaertumor_icd_code'], 'C44') === false
+                        ;
 
                         if ($diseaseCondition === true) {
-                            $sectionData = $section->getData();
-
                             $filled = false;
 
                             // check if one element exists with all values filled

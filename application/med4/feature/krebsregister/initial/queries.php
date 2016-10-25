@@ -3,28 +3,27 @@
 /*
  * AlcedisMED
  * Copyright (C) 2010-2016  Alcedis GmbH
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
-
+ */
 
 $queries['kr_register_patient'] = "
     SELECT
         p.patient_id as id,
         p.nachname,
         p.vorname,
-        p.geburtsdatum,
+        DATE_FORMAT(p.geburtsdatum, '%d.%m.%Y') as geburtsdatum,
         p.patient_nr,
         p.geschlecht
     FROM
@@ -46,6 +45,7 @@ $queries['kr_list'] = "
         p.nachname,
         p.vorname,
         p.geburtsdatum,
+        {#pds#} COLLATE latin1_german1_ci as erkrankung,
         p.patient_nr,
         IFNULL((SELECT
             MIN(
@@ -58,10 +58,7 @@ $queries['kr_list'] = "
             INNER JOIN export_case_log ecl ON ecl.export_log_id = el.export_log_id
             INNER JOIN export_section_log esl ON esl.export_case_log_id = ecl.export_case_log_id
          WHERE
-            el.export_name = 'kr_{#type#}' AND
-            el.org_id = p.org_id AND
-            el.export_unique_id = p.org_id AND
-            el.finished = 0 AND
+            el.export_log_id = '{#exportLogId#}' AND
             ecl.patient_id = p.patient_id
          LIMIT 1
         ), 0) as status,
@@ -82,10 +79,7 @@ $queries['kr_list'] = "
             INNER JOIN export_case_log ecl ON ecl.export_log_id = el.export_log_id
             INNER JOIN export_section_log esl ON esl.export_case_log_id = ecl.export_case_log_id AND esl.valid IN (2,21,32,321)
          WHERE
-            el.export_name = 'kr_{#type#}' AND
-            el.org_id = p.org_id AND
-            el.export_unique_id = p.org_id AND
-            el.finished = 0 AND
+            el.export_log_id = '{#exportLogId#}' AND
             ecl.patient_id = p.patient_id
          LIMIT 1
         ), 0) as errors,
@@ -95,10 +89,7 @@ $queries['kr_list'] = "
             INNER JOIN export_case_log ecl ON ecl.export_log_id = el.export_log_id
             INNER JOIN export_section_log esl ON esl.export_case_log_id = ecl.export_case_log_id AND esl.valid IN (1,21,31,321)
          WHERE
-            el.export_name = 'kr_{#type#}' AND
-            el.org_id = p.org_id AND
-            el.export_unique_id = p.org_id AND
-            el.finished = 0 AND
+            el.export_log_id = '{#exportLogId#}' AND
             ecl.patient_id = p.patient_id
          LIMIT 1
         ), 0) as warnings

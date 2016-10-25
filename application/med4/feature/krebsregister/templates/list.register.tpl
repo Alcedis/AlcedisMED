@@ -19,9 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <table  width="100%">
         <tr>
             <td>
-                {#lbl_last_export#} {$lastExportFinished}<br/>
+
+                {#lbl_last_export#} {if strlen($lastExportFinished)} {$lastExportFinished} Uhr{else}--{/if}<br/>
+
                 {#lbl_current_export#} {$currentExportState} Uhr<br/>
-                {#lbl_patients_exportable#} {$patientsExportable} {#lbl_patients#} {$patients}
+                {#lbl_patients#} {$patients}
             </td>
 
             <td style="text-align: right">
@@ -55,6 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <td class="head ext-search cookie-vorname">{#vorname#}</td>
         <td class="head unsortable ext-search cookie-patient_r">{#patient_nr#}</td>
         <td class="head ext-search cookie-geburtsdatum">{#geburtsdatum#}</td>
+        <td class="head ext-search cookie-erkrankung">{#erkrankung#}</td>
 
         <td class="head ext-search cookie-errors cookietype-lookup" align="center">{#error#}
             <span class="bfl-lookup-content" style="display:none">

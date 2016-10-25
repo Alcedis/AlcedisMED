@@ -90,7 +90,7 @@ class RKrExport
      * m_parameters
      *
      * @access  protected
-     * @var     string
+     * @var     array
      */
     protected $m_parameters;
 
@@ -137,7 +137,7 @@ class RKrExport
      * @access  protected
      * @var     RKrExportCase[]
      */
-    protected $m_cases = array();
+    protected $m_cases;
 
 
     /**
@@ -208,7 +208,42 @@ class RKrExport
         $this->m_create_user_id = 0;
         $this->m_create_time = null;
         $this->m_update_time = null;
-        $this->m_cases = array();
+        $this->m_cases = null;
+    }
+
+
+    /**
+     * getPatientIds
+     *
+     * @access  public
+     * @param   resource $db
+     * @return  array
+     */
+    public function getPatientIds($db)
+    {
+        $ids = [];
+
+        // cases was loaded during complete db read
+        if ($this->m_cases !== null) {
+
+
+        } else { // only export record was initalized so we call ids directly
+            $dbId = $this->getDbId();
+
+            // check if export record id exists
+            if ($dbId > 0) {
+                $gIds = dlookup($db, 'export_case_log', 'GROUP_CONCAT(DISTINCT patient_id)', "export_log_id = '{$dbId}' GROUP BY export_log_id");
+
+                // if ids exists
+                if (strlen($gIds) > 0) {
+                    $ids = explode(',', $gIds);
+
+                    sort($ids);
+                }
+            }
+        }
+
+        return $ids;
     }
 
 
@@ -336,17 +371,53 @@ class RKrExport
         $this->m_melder_id = $melder_id;
     }
 
+
+    /**
+     * getParameters
+     *
+     * @access  public
+     * @return  array
+     */
     public function getParameters()
     {
         return $this->m_parameters;
     }
 
-    public function setParameters($parameters)
+
+    /**
+     * set parameter for this record
+     *
+     * @access  public
+     * @param   array $parameters
+     * @return  RKrExport
+     */
+    public function setParameters(array $parameters)
     {
         $this->m_parameters = $parameters;
 
         return $this;
     }
+
+
+    /**
+     * add parameter for this record
+     *
+     * @access  public
+     * @param   string $name
+     * @param   mixed  $value
+     * @return  RKrExport
+     */
+    public function addParameter($name, $value)
+    {
+        if (is_array($this->m_parameters) === false) {
+            $this->setParameters([]);
+        }
+
+        $this->m_parameters[$name] = $value;
+
+        return $this;
+    }
+
 
     public function getFinished()
     {
@@ -390,8 +461,8 @@ class RKrExport
     {
         $this->m_create_time = $create_time;
 
-        if ($updateChildren) {
-            foreach($this->m_cases as $case) {
+        if ($updateChildren === true) {
+            foreach($this->getCases() as $case) {
                 if ($case instanceof RKrExportCase) {
                     $case->setCreatetime($create_time, $updateChildren);
                 }
@@ -418,7 +489,7 @@ class RKrExport
      */
     public function getCases()
     {
-        return $this->m_cases;
+        return ($this->m_cases === null ? array() : $this->m_cases);
     }
 
 
@@ -451,9 +522,56 @@ class RKrExport
      */
     public function addCase(RKrExportCase $case)
     {
+        // if not initialized
+        if ($this->m_cases === null) {
+            $this->m_cases = array();
+        }
+
         $this->m_cases[] = $case;
 
         return $this;
+    }
+
+
+    /**
+     * check if record exists
+     *
+     * @access  public
+     * @param   resource $db
+     * @param   string   $export_name
+     * @param   int      $exportUniqueId
+     * @param   int      $org_id
+     * @param   string $search_type
+     * @return  bool
+     */
+    public function exists($db, $export_name, $exportUniqueId, $org_id, $search_type = '')
+    {
+        $query = "
+            SELECT
+                export_log_id
+            FROM
+                export_log el
+            WHERE
+                el.export_name='{$export_name}' AND
+                el.org_id='{$org_id}' AND
+                el.export_unique_id='{$exportUniqueId}'
+        ";
+
+        if ('finished' === strtolower($search_type)) {
+            $query .= "AND el.finished=1 ";
+        } else if ('not_finished' === strtolower($search_type)) {
+            $query .= "AND el.finished=0 ";
+        }
+
+        $query .= "
+            ORDER BY
+                el.createtime,
+                el.export_nr
+        ";
+
+        $data = sql_query_array($db, $query);
+
+        return (count($data) > 0);
     }
 
 
@@ -466,9 +584,10 @@ class RKrExport
      * @param   string   $exportUniqueId
      * @param   int      $org_id
      * @param   string   $search_type
+     * @param   bool     $complete
      * @return  bool
      */
-    public function read($db, $export_name, $exportUniqueId, $org_id, $search_type = '')
+    public function read($db, $export_name, $exportUniqueId, $org_id, $search_type = '', $complete = true)
     {
         $this->Clear();
 
@@ -511,27 +630,31 @@ class RKrExport
             $this->m_create_time = $result['createtime'];
             $this->m_update_time = $result['updatetime'];
 
-            // get all cases for the selected export
-            $query = "
-                SELECT
-                    *
-                FROM
-                    export_case_log ecl
-                WHERE
-                    ecl.export_log_id = '{$result['export_log_id']}'
-                ORDER BY
-                    ecl.patient_id,
-                    ecl.erkrankung_id,
-                    ecl.diagnose_seite
-            ";
+            // only read complete dataset if wanted
+            if ($complete === true) {
+                // get all cases for the selected export
+                $query = "
+                    SELECT
+                        *
+                    FROM
+                        export_case_log ecl
+                    WHERE
+                        ecl.export_log_id = '{$result['export_log_id']}'
+                    ORDER BY
+                        ecl.patient_id,
+                        ecl.erkrankung_id,
+                        ecl.diagnose_seite
+                ";
 
-            $result_data = sql_query_array($db, $query);
+                $result_data = sql_query_array($db, $query);
 
-            if (false !== $result_data) {
-                foreach ($result_data as $row) {
-                    $case = new RKrExportCase;
-                    $case->Create($db, $row, true);
-                    $this->m_cases[] = $case;
+                // read only complete dataset
+                if (false !== $result_data) {
+                    foreach ($result_data as $row) {
+                        $case = new RKrExportCase;
+                        $case->Create($db, $row, true);
+                        $this->addCase($case);
+                    }
                 }
             }
 
@@ -611,7 +734,7 @@ class RKrExport
             @mysql_query($query, $db);
         }
 
-        $cases = $this->m_cases;
+        $cases = $this->getCases();
 
         // Write references
         foreach ($cases as $index => $case) {
@@ -624,45 +747,45 @@ class RKrExport
         }
 
         // free ram
-        $this->m_cases = array();
+        $this->m_cases = null;
     }
 
 
     /**
-     * removeCasesWithoutPatientId
+     * remove cases from export except of given patientIds
      *
      * @access  public
      * @param   resource $db
      * @param   array $patientIds
      * @return  RKrExport
      */
-    public function removeCasesWithoutPatientId($db, array $patientIds)
+    public function removeCasesExceptOfPatientIds($db, array $patientIds)
     {
-        $caseIds = array();
+        $exportLogId = $this->getDbId();
 
+        // only delete if patient ids was given
+        // add safety patient id (if no ids was given, delete all)
+        $patientIds[] = 0;
+
+        // clear memory
         foreach ($this->getCases() as $i => $case) {
             if (in_array($case->getPatientId(), $patientIds) === false) {
-                // we need a faster delete
-//                $case->Delete($db);
                 unset($this->m_cases[$i]);
-
-                $caseIds[] = $case->getDbid();
             }
         }
 
-        // only delete if case ids exist
-        if (count($caseIds) > 0) {
-            $caseIds = array_unique($caseIds);
+        $query = "
+            DELETE 
+                ecl,
+                esl
+            FROM export_case_log ecl 
+                LEFT JOIN export_section_log esl ON esl.export_case_log_id = ecl.export_case_log_id
+            WHERE 
+                ecl.export_log_id = '{$exportLogId}' AND
+                ecl.patient_id NOT IN (" . implode(',', $patientIds) . ")
+        ";
 
-            $queries = array(
-                "DELETE FROM export_case_log WHERE export_case_log_id IN (" . implode(',', $caseIds) . ")",
-                "DELETE FROM export_section_log WHERE export_case_log_id IN (" . implode(',', $caseIds) . ")"
-            );
-
-            foreach ($queries as $query) {
-                @mysql_query($query, $db);
-            }
-        }
+        @mysql_query($query, $db);
 
         return $this;
     }
@@ -740,16 +863,16 @@ class RKrExport
 
 
     /**
-     * getPatienCount
+     * getPatientCount
      *
      * @access  public
      * @return  int
      */
-    public function getPatienCount()
+    public function getPatientCount()
     {
         $patients = array();
 
-        foreach ($this->m_cases as $case) {
+        foreach ($this->getCases() as $case) {
             $patients[$case->getPatientId()] = 1;
         }
 
@@ -767,7 +890,8 @@ class RKrExport
     public function getValidCasesCount()
     {
         $valid_cases = 0;
-        foreach($this->m_cases as $case) {
+
+        foreach($this->getCases() as $case) {
             if (($case instanceof RKrExportCase) &&
                 $case->IsCaseValid() &&
                 (1 == $case->HasDataChanged())) {
@@ -781,24 +905,28 @@ class RKrExport
     public function getInvalidCasesCount()
     {
         $invalid_cases = 0;
-        foreach($this->m_cases as $case) {
+
+        foreach($this->getCases() as $case) {
             if (($case instanceof RKrExportCase) &&
                 !$case->IsCaseValid()) {
                 $invalid_cases++;
             }
         }
+
         return $invalid_cases;
     }
 
     public function getAllInvalidSections()
     {
         $result = array();
-        foreach($this->m_cases as $case) {
+
+        foreach($this->getCases() as $case) {
             if ($case instanceof RKrExportCase) {
                 $result = array_merge($result, $case->getAllSectionsWithOnlyWarnings());
                 $result = array_merge($result, $case->getAllInvalidSections());
             }
         }
+
         return array_values($result);
     }
 
@@ -816,7 +944,7 @@ class RKrExport
         $patient_ids = array();
         $invalid_patient_ids = array();
 
-        foreach ($this->m_cases as $case) {
+        foreach ($this->getCases() as $case) {
             if ($case instanceof RKrExportCase) {
                 $patient_ids[$case->getPatientId()] = $case->getPatientId();
 

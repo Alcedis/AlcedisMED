@@ -3,20 +3,20 @@
 /*
  * AlcedisMED
  * Copyright (C) 2010-2016  Alcedis GmbH
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 require_once( 'feature/export/base/class.exportxmlserialiser.php' );
 require_once( 'feature/export/history/class.historymanager.php' );
@@ -85,8 +85,6 @@ class registerExportSerializer extends CExportXmlSerialiser
      */
     public function validate($parameters)
     {
-        $messengerErrors = array();
-
         $smarty = $this->getInternalSmarty();
 
         $settings = $parameters['settings'];
@@ -97,81 +95,93 @@ class registerExportSerializer extends CExportXmlSerialiser
         /* @var registerMessengerCollection $messenger */
         $messenger = $parameters['messenger'];
 
-        $data = array(
-            'absender' => $settings,
-            'patients' => $patients->toArray(true, true, true),
-            'melder'   => $messenger->toArray()
-        );
-
-        // don't replace xml entities here, this will be done from xmlTag smarty plugin
-
-        $smarty->assign('data', $data);
-
         $schema = $this->getAbsolutePath() . $this->getXmlSchemaFileName();
 
-        $xml = utf8_encode($smarty->fetch($this->getXmlTemplateFileName()));
+        libxml_use_internal_errors(true);
 
-        $errors = $this->_xmlSchemaValidate($xml, $schema);
-
-        foreach ($errors as $error) {
-            // this is the main path to error position
-            $rootPath = $error['section']['rootPath'];
-
-            // only process if parent nodeName is patient
-            if ($rootPath['nodeName'] === 'patient') {
-                // find patient
-                $patient = $patients->getRegisterPatient($rootPath['attributes']['patient_id']);
-                $path    = $rootPath['child'];
-
-                // add error to all patient sections
-                if ($path['nodeName'] === 'patienten_stammdaten') {
-                    foreach ($patient->getMessages() as $patientMessage) {
-                        $patientSection = $patientMessage->getSection('patient');
-
-                        $patientSection->addError($error);
-                        $patientSection->setValid(self::buildValid($error['level'], $patientSection->getValid()));
-                    }
-                } else {
-                    // message section
-                    $messageChild = $path['child'];
-                    $messageIdent = substr($messageChild['attributes']['meldung_id'], 4);
-
-                    $message = $patient->getMessage($messageIdent);
-                    $section = $messageChild['child'];
-
-                    // this is definitely a section
-                    if (isset($section['child']) === true) {
-                        $messageSection = $message->getSection($section['nodeName']);
-
-                        $messageSection->addError($error);
-
-                        $messageSection->setValid(self::buildValid($error['level'], $messageSection->getValid()));
-                    } else { // this is directly under message
-                        $messageSection = $message->getSection('message');
-
-                        $messageSection->addError($error);
-                        $messageSection->setValid(self::buildValid($error['level'], $messageSection->getValid()));
-                    }
-                }
-            }
-            elseif ($rootPath['nodeName'] === 'melder') {
-                $error['messengerId'] = $rootPath['child']['attributes']['melder_id'];
-                $error['message'] .= ' (' . $error['section']['value'] . ')';
-
-                $messengerErrors[] = $error;
-            }
+        // check if schema file exists
+        if (!is_file($schema)) {
+            throw new EKrExportException('ERROR: XML-Schema file [' . $schema . '] not found.');
         }
 
-        // iterate over each error, find relevant patient
-        foreach ($messengerErrors as $messengerError) {
+        $templateFileName = $this->getXmlTemplateFileName();
 
-            // mark all related messenger message with error
-            foreach ($messenger->getMessagesForMessenger($messengerError['messengerId']) as $message) {
+        $messengerArray = $messenger->toArray();
 
-                $messageSection = $message->getSection('message');
+        foreach ($patients->toArray(true, true, true) as $patient) {
+            $messengerErrors = array();
 
-                $messageSection->addError($messengerError);
-                $messageSection->setValid(self::buildValid($error['level'], $messageSection->getValid()));
+            $data = array(
+                'absender' => $settings,
+                'patients' => [$patient],
+                'melder'   => $messengerArray
+            );
+
+            // don't replace xml entities here, this will be done from xmlTag smarty plugin
+            $smarty->assign('data', $data);
+
+            $xml = utf8_encode($smarty->fetch($templateFileName));
+
+            $errors = $this->_xmlSchemaValidate($xml, $schema);
+
+            foreach ($errors as $error) {
+                // this is the main path to error position
+                $rootPath = $error['section']['rootPath'];
+
+                // only process if parent nodeName is patient
+                if ($rootPath['nodeName'] === 'patient') {
+                    // find patient
+                    $patient = $patients->getRegisterPatient($rootPath['attributes']['patient_id']);
+                    $path    = $rootPath['child'];
+
+                    // add error to all patient sections
+                    if ($path['nodeName'] === 'patienten_stammdaten') {
+                        foreach ($patient->getMessages() as $patientMessage) {
+                            $patientSection = $patientMessage->getSection('patient');
+
+                            $patientSection->addError($error);
+                            $patientSection->setValid(self::buildValid($error['level'], $patientSection->getValid()));
+                        }
+                    } else {
+                        // message section
+                        $messageChild = $path['child'];
+                        $messageIdent = substr($messageChild['attributes']['meldung_id'], 4);
+
+                        $message = $patient->getMessage($messageIdent);
+                        $section = $messageChild['child'];
+
+                        // this is definitely a section
+                        if (isset($section['child']) === true) {
+                            $messageSection = $message->getSection($section['nodeName']);
+
+                            $messageSection->addError($error);
+
+                            $messageSection->setValid(self::buildValid($error['level'], $messageSection->getValid()));
+                        } else { // this is directly under message
+                            $messageSection = $message->getSection('message');
+
+                            $messageSection->addError($error);
+                            $messageSection->setValid(self::buildValid($error['level'], $messageSection->getValid()));
+                        }
+                    }
+                } elseif ($rootPath['nodeName'] === 'melder') {
+                    $error['messengerId'] = $rootPath['child']['attributes']['melder_id'];
+                    $error['message'] .= ' (' . $error['section']['value'] . ')';
+
+                    $messengerErrors[] = $error;
+                }
+            }
+
+            // iterate over each error, find relevant patient
+            foreach ($messengerErrors as $messengerError) {
+
+                // mark all related messenger message with error
+                foreach ($messenger->getMessagesForMessenger($messengerError['messengerId']) as $message) {
+                    $messageSection = $message->getSection('message');
+
+                    $messageSection->addError($messengerError);
+                    $messageSection->setValid(self::buildValid($error['level'], $messageSection->getValid()));
+                }
             }
         }
     }
@@ -458,13 +468,11 @@ class registerExportSerializer extends CExportXmlSerialiser
             $xml_string = utf8_encode($xml_string);
         }
 
-        if (!is_file($xml_schema)) {
-            throw new EKrExportException('ERROR: XML-Schema file [' . $xml_schema . '] not found.');
+        static $xml;
+
+        if ($xml === null) {
+            $xml = new DOMDocument();
         }
-
-        libxml_use_internal_errors(true);
-
-        $xml = new DOMDocument();
 
         $result = $xml->loadXML($xml_string, XML_PARSE_BIG_LINES);
 
@@ -481,9 +489,7 @@ class registerExportSerializer extends CExportXmlSerialiser
         $this->_mapNodeLines($xml->firstChild, $errorMap);
 
         foreach ($errors as $i => $error) {
-            $line = $error['line'];
-
-            $errors[$i]['section'] = $errorMap[$line];
+            $errors[$i]['section'] = $errorMap[$error['line']];
         }
 
         return $errors;

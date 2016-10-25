@@ -21,6 +21,11 @@
 require_once( 'record.krexportsection.php' );
 require_once( 'class.krexportexception.php' );
 
+/**
+ *
+ * @author kza
+ *
+ */
 class RKrExportCase
 {
     /**
@@ -132,6 +137,15 @@ class RKrExportCase
 
 
     /**
+     * flag for case errors
+     *
+     * @access  protected
+     * @var     bool
+     */
+    protected $_hasErrors = false;
+
+
+    /**
      * Create
      *
      * @access  public
@@ -175,6 +189,7 @@ class RKrExportCase
         $this->m_diagnose_seite = '';
         $this->m_anlass         = '';
         $this->m_create_time    = null;
+        $this->_hasErrors       = false;
         $this->hash             = '';
         $this->m_update_time    = null;
         $this->m_sections       = array();
@@ -493,10 +508,28 @@ class RKrExportCase
      */
     public function addSection(RKrExportSection $section)
     {
+        if ($section->hasErrors() === true) {
+            $this->_hasErrors = true;
+        }
+
         $this->m_sections[] = $section;
 
         return $this;
     }
+
+
+    /**
+     * hasErrors
+     *
+     * @access  public
+     * @return  bool
+     */
+    public function hasErrors()
+    {
+        return $this->_hasErrors;
+    }
+
+
 
     /*
     public function getValidSections()
@@ -756,6 +789,7 @@ class RKrExportCase
         $result[ 'diagnose_seite' ]     = $this->m_diagnose_seite;
         $result[ 'anlass' ]             = $this->m_anlass;
         $result[ 'hash' ]               = $this->m_hash;
+        $result['hasErrors']            = $this->_hasErrors;
         $result[ 'createuser' ]         = $this->m_create_user_id;
         $result[ 'createtime' ]         = $this->m_create_time;
         $result[ 'updatetime' ]         = $this->m_update_time;

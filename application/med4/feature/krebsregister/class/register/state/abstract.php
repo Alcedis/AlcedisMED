@@ -3,20 +3,20 @@
 /*
  * AlcedisMED
  * Copyright (C) 2010-2016  Alcedis GmbH
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 require_once 'feature/krebsregister/class/register/messenger.php';
 require_once 'feature/krebsregister/class/register/query/default.php';
@@ -182,11 +182,14 @@ abstract class registerStateAbstract implements registerStateInterface
 
         $orgId = $params['org_id'];
 
-        $isCached = $this->_isCached = $exportRecord->read($db, 'kr_' . $type, $orgId, $orgId, 'not_finished');
+        $isCached = $this->_isCached = $exportRecord->exists($db, 'kr_' . $type, $orgId, $orgId, 'not_finished');
 
         // prepare exportRecord if export is not already in cache
         if ($isCached === false) {
             $this->_initializeExportRecord();
+        } else {
+            // only read export data
+            $exportRecord->read($db, 'kr_' . $type, $orgId, $orgId, 'not_finished', false);
         }
 
         registerMap::setDb($db);
@@ -284,6 +287,28 @@ abstract class registerStateAbstract implements registerStateInterface
         return $this;
     }
 
+    /**
+     * get patient ids from cache if exists
+     *
+     * @access  public
+     * @return  array
+     */
+    public function getCachePatientIds()
+    {
+        $ids = [];
+
+        // load only data if cache exists
+        if ($this->isCached() === true) {
+            $exportRecord = $this->getExportRecord();
+
+            // get patient ids from export record parameters
+            $parameters = $exportRecord->getParameters();
+            $ids = $parameters['patientIds'];
+        }
+
+        return $ids;
+    }
+
 
     /**
      * getPatients
@@ -296,6 +321,7 @@ abstract class registerStateAbstract implements registerStateInterface
     {
         $patients = $this->_patientCollection;
 
+        // if collection not already build
         if ($patients === null) {
             $patients = $this->_patientCollection = $this->_getPatients($export);
         }
@@ -387,9 +413,31 @@ abstract class registerStateAbstract implements registerStateInterface
     {
         $collection = new registerPatientCollection;
 
-        // load from cache if exists
+        // load only valid cases from cache if exists
         if ($this->isCached() === true) {
-            $this->_loadFromCache($collection);
+            $exportRecord = $this->getExportRecord();
+
+            $exportRecordId = $exportRecord->getDbId();
+
+            $caseLogIds = sql_query_array($this->getDb(), "
+                SELECT
+                    export_case_log_id
+                FROM export_case_log
+                WHERE
+                    export_log_id = '{$exportRecordId}'
+            ");
+
+            $cases = [];
+
+            // load cases for this export
+            foreach ($caseLogIds as $record) {
+                $case = new RKrExportCase;
+                $case->read($this->getDb(), $record['export_case_log_id'], true);
+
+                $cases[] = $case;
+            }
+
+            $this->_loadFromCache($collection, $cases);
         } else { // load data from system
             $cases  = $this->getQuery()->execute();
             $params = $this->getParams();
@@ -464,14 +512,8 @@ abstract class registerStateAbstract implements registerStateInterface
      * @param   bool  $raw
      * @return  void
      */
-    protected function _loadFromCache(registerPatientCollection $collection, $cases = null, $raw = false)
+    protected function _loadFromCache(registerPatientCollection $collection, array $cases, $raw = false)
     {
-        // load cases from export record
-        if ($cases === null) {
-            $exportRecord = $this->getExportRecord();
-            $cases  = $exportRecord->getCases();
-        }
-
         $params = $this->getParams();
 
         foreach ($cases as $case) {
@@ -548,21 +590,29 @@ abstract class registerStateAbstract implements registerStateInterface
         $db           = $this->getDb();
         $exportRecord = $this->getExportRecord();
 
+        $patientIds = [];
+
         /* @var registerPatient $patient */
         foreach ($collection as $patient) {
-
             // only if patient has changed
             if ($patient->hasChanged() === true) {
+                // definitely add patient id to cache stack
+                $patientIds[] = $patient->getId();
 
                 // only add case to export if message has is new or has difference
                 foreach ($patient->getMessages() as $patientMessage) {
+                    // if initial or was changed
                     if ($patientMessage->hasHistory() === false || $patientMessage->hasDifference() == true) {
                         $patientMessage->buildHash();
                         $exportRecord->addCase($patientMessage->getExportCase());
                     }
                 }
-            }
+            } elseif ($patient->getMessageCount() > 0) { // check if patient was exported before
+                $patientIds[] = $patient->getId();
+            } // else ignore patient for list
         }
+
+        $exportRecord->addParameter('patientIds', $patientIds);
 
         // better performance for writing many data
         // must only called once each write
@@ -578,7 +628,7 @@ abstract class registerStateAbstract implements registerStateInterface
 
     /**
      * _loadFromHistory
-     * (load export datasets which wouldn't used in current export but they should be visible
+     * (load export records which wouldn't used in current export but they should be visible
      *
      * @access  protected
      * @param   registerPatientCollection $collection
@@ -688,6 +738,7 @@ abstract class registerStateAbstract implements registerStateInterface
 
         $patientIds = array();
 
+
         /* check patients */
 
         /* @var registerPatient $patient */
@@ -746,7 +797,7 @@ abstract class registerStateAbstract implements registerStateInterface
         // if history id exists, mark export record as finished and remove all cases from patients which are not exported
         if ($historyId !== null) {
             $this->getExportRecord()
-                ->removeCasesWithoutPatientId($this->getDb(), $patientIds)
+                ->removeCasesExceptOfPatientIds($this->getDb(), $patientIds)
                 ->markAsFinished($this->getDb())
             ;
         }

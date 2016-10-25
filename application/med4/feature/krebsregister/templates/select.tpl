@@ -15,6 +15,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *}
+<div class="info">
+    {#lbl_info#}
+</div>
+
 <div class="register">
     {foreach from=$register item=reg}
         <div class="register-container">

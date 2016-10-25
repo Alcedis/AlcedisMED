@@ -14,8 +14,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*} 
-
+*}
 {section name=i loop=$fields.patient_id.value}
     {html_odd_even var="class" key=%i.index%}
 
@@ -39,6 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <td class="{$class}">{$fields.vorname.value[i]}</td>
         <td class="{$class}">{$fields.patient_nr.value[i]}</td>
         <td class="{$class}">{$fields.geburtsdatum.value[i]}</td>
+        <td class="{$class}">{$fields.erkrankung.value[i]}</td>
 
         <td class="{$class}" align="center">
             {if $fields.errors.value[i] == 1}
@@ -74,6 +74,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </tr>
 {sectionelse}
     <tr>
-        <td class="even no-data" colspan="11">{#no_dataset#}</td>
+        <td class="even no-data" colspan="12">{#no_dataset#}</td>
     </tr>
 {/section}

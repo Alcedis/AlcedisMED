@@ -14,8 +14,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*} 
-
+*}
 <div id="erroneous_case">
     <b>{#lbl_reason#}:</b> <span style="margin-right: 10px">{$case.anlass}</span> <b>{#lbl_disease#}:</b> <span style="margin-right: 10px">{$case.erkrankung}</span> {if isset($case.seite)}<b>{#lbl_side#}:</b> {$case.seite}{/if}
 </div>

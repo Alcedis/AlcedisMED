@@ -15,6 +15,31 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *}
+{if $action === 'confirm'}
+    <table width="100%">
+        <tr>
+            <td style="text-align: center">
+                <div style="margin-top: 20px">
+                    <img src="media/img/app/krebsregister/state/kr_{$type}.png" />
+                </div>
+                <div style="margin-top: 30px; margin-bottom: 50px">
+                    {#lbl_confirm#}
+
+                    <div class="register-create-file">
+                        <a class="create" href="index.php?page=register&feature=krebsregister&type={$type}&pids={$pids}&action=create">
+                            {#lbl_create_file#}
+                        </a>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px">
+                    <a href="index.php?{$back_btn}" style="text-decoration: underline">
+                        {#lbl_back_export#}
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </table>
+{else}
 <table width="100%">
     <tr>
         <td style="text-align: center">
@@ -38,3 +63,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </td>
     </tr>
 </table>
+{/if}

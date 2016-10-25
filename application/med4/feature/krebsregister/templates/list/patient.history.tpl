@@ -14,8 +14,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*} 
-
+*}
 <div style="text-align: center">
     <div style="background-color: #ff756c; margin: 2em 0; padding: .6em; display: inline-block">
         <a style="color: #000" href="index.php?page=register_archive&feature=krebsregister&type={$type}&patient_id={$patient.id}&action=recreate">Erneuter Vollexport des Patienten</a>

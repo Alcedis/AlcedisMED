@@ -3,20 +3,20 @@
 /*
  * AlcedisMED
  * Copyright (C) 2010-2016  Alcedis GmbH
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 require_once 'abstract.php';
 require_once 'message/abstract.php';
@@ -242,12 +242,25 @@ abstract class registerStateDefault extends registerStateAbstract
         $notice = null;
         $data   = $patient->getData();
 
-        if ($data['krankenkassennr'] !== null) {
-            $notice = registerMap::create('krankenkasse', $data['krankenkassennr'])->getLabel();
+        $krNo = $data['krankenkassennr'];
 
-            // fallback for 'vorlage_krankenkasse'
-            if ($notice === '') {
-                $notice = registerMap::create('vorlage_krankenversicherung', $data['krankenkassennr'])->getLabel();
+        // get values for field 'krankenkassennr'
+        if (strlen($krNo) > 0) {
+            $notice = registerMap::create('krankenkasse', $krNo)
+                ->getLabel()
+            ;
+
+            // fallback for 'vorlage_krankenkasse' if value in l_ktst couldn't be found
+            if (strlen($notice) === 0) {
+                $notice = registerMap::create('vorlage_krankenversicherung', $krNo)
+                    ->getLabel()
+                ;
+            }
+
+            // don't export the number if not 9 chars long
+            // prevents xsd from throwing errors but shows name of insurance in patient
+            if (strlen($krNo) !== 9) {
+                $patient->addData('krankenkassennr', null);
             }
         }
 

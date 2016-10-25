@@ -14,8 +14,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*} 
-
+*}
 <table id="export_case" style="width: 100%">
     <tr>
         <th class="head" style="width: 5%; text-align: left"> {#lbl_export_btn#}</th>

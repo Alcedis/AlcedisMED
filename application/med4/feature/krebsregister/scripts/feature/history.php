@@ -18,22 +18,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Class registerHelper
- */
-class registerHelper
-{
-    /**
-     * ifNull
-     *
-     * @static
-     * @access  public
-     * @param   string  $valA
-     * @param   string  $valB
-     * @return  string
-     */
-    public static function ifNull($valA, $valB)
-    {
-        return (strlen($valA) > 0 ? $valA : $valB);
+require_once 'feature/krebsregister/class/register/export/record.krexport.php';
+
+/* @var Chistory_1_0_Controller $export */
+
+$historyManager = CHistoryManager::getInstance();
+
+/* remove cache data if any history was deleted */
+$historyManager->addCallback('afterDelete', function(CHistoryManager $historyManager, $params) {
+
+    $db = $historyManager->getDb();
+
+    /* @var CHistory $history */
+    $history    = $params[0];
+    $orgId      = $history->getOrgId();
+    $exportName = $history->getExportName();
+
+    $export = new RKrExport;
+
+    $export->read($db, $exportName, $orgId, $orgId, 'not_finished', false);
+
+    if ($export->getDbId() != 0) {
+        $export->delete($db);
     }
-}
+});
