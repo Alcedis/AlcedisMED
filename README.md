@@ -1,6 +1,15 @@
 # AlcedisMED
 
 - Aktuelle Version: 4.1.3
+=======
+## Offizielle Seite
+
+https://tumordokumentation.alcedis.de
+
+### Spezifikationsdokumente für die Anwendung
+
+https://tumordokumentation.alcedis.de/downloads/
+
 
 ## Übersicht
 Alcedis MED bietet Ihnen ein breites Spektrum an Möglichkeiten:
