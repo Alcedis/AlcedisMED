@@ -1,7 +1,7 @@
 # AlcedisMED
 
 - Aktuelle Version: 4.1.3
-=======
+
 ## Offizielle Seite
 
 https://tumordokumentation.alcedis.de
