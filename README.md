@@ -1,5 +1,7 @@
 # AlcedisMED
 
+- Aktuelle Version: 4.1.3
+
 ## Übersicht
 Alcedis MED bietet Ihnen ein breites Spektrum an Möglichkeiten:
 
@@ -17,7 +19,6 @@ Alcedis MED bietet Ihnen ein breites Spektrum an Möglichkeiten:
 - mind. 50 GB HDD
 - Dual Core CPU
 
-
 **Software:**
 - Linux basiertes OS
 - PHP v5.6.x
@@ -28,6 +29,11 @@ Alcedis MED bietet Ihnen ein breites Spektrum an Möglichkeiten:
 
 https://youtu.be/3wzhyhhHhts
 
+## Changelog
 
-## Feature "Krebsregister" hinzugefügt (21.07.2016)
-Der Code für den Export an das hessische Krebsregister steht nun zur Verfügung
+4.1.3:
+
+
+4.1.2: 
+
+    - Feature "Krebsregister Export" hinzugefügt
