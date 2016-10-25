@@ -41,7 +41,19 @@ https://youtu.be/3wzhyhhHhts
 ## Changelog
 
 4.1.3:
-
+    
+    - Fix: 
+         Krebsregister Export: 
+         - Nutzten verschiedene User den Export, aktualisierte sich die Listenansicht der Patienten nicht. Fehlerbehebung/Nachdokumentation konnte nicht angezeigt werden.
+         - Die Felder Menge_TNM/TNM/TNM_TMenge_TNM/TNM/TNM_NMenge_TNM/TNM/TNM_M Im Abschnitt "TNM" sind nur noch Pflicht bei soliden Tumoren AUSSER bei C44* (Sarkome).
+           Bei Sarkomen gibt es kein TNM.
+    
+    - Feature: 
+         Krebsregister Export: 
+         - In der Patientenliste kann nun nach Erkrankung gefiltert werden.
+         - Die Validierung des Felds "KrankenkassenNr." wurde enfernt. Es kann nun auch leer bleiben.
+         - Der Name der Krankenkassen wird nun auch exportiert wenn die KrankenkassenNr. länger oder kürzer als 9 (Private Krankenvericherungen) Zeichen
+           ist. Dadurch wird wenigstens der Name der Kasse mitgesendet, wenn die KassenNr. nicht dem XSD entspricht.
 
 4.1.2: 
 
