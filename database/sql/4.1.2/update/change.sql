@@ -17,4 +17,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-UPDATE `settings` SET `software_version` = '4.1.3' WHERE `settings`.`settings_id` = 1 LIMIT 1;
+ALTER TABLE `patient` ADD `land` VARCHAR(25) NULL AFTER `ort`;
+ALTER TABLE `_patient` ADD `land` VARCHAR(25) NULL AFTER `ort`;
+
+ALTER TABLE `export_case_log` ADD `hash` VARCHAR(255) NULL AFTER `anlass`;
+
+ALTER TABLE `export_case_log` 
+DROP INDEX `idx2`, 
+ADD INDEX `idx2` (`erkrankung_id`, `diagnose_seite`, `anlass`) USING BTREE;
+
+ALTER TABLE `export_history` DROP INDEX `idx1`, ADD UNIQUE `ukey1` (`export_log_id`) USING BTREE;
