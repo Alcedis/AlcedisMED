@@ -28,6 +28,4 @@ require_once(DIR_LIB . '/alcedis/function.dataset.php');
 require_once(DIR_LIB . '/tcpdf/tcpdf.php');
 require_once(DIR_LIB . '/fpdf/fpdi.php');
 
-require_once(DIR_LIB . '/alcedis/application.php');;
-
 ?>
